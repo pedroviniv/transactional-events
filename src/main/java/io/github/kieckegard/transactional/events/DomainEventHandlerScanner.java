@@ -5,11 +5,13 @@
  */
 package io.github.kieckegard.transactional.events;
 
+import java.util.Map;
+
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public interface DomainEventHandlers {
+public interface DomainEventHandlerScanner {
     
-    DomainEventHandler get(DomainEvent domainEvent);
+    Map<Class<?>, DomainEventHandlerMethod> scan();
 }

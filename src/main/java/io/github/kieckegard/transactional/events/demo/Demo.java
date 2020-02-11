@@ -11,7 +11,7 @@ import io.github.kieckegard.transactional.events.DomainEventHandlerWorker;
 import io.github.kieckegard.transactional.events.DomainEventPublisher;
 import io.github.kieckegard.transactional.events.DomainEventRepository;
 import io.github.kieckegard.transactional.events.DomainEventResolver;
-import io.github.kieckegard.transactional.events.ReflectionDomainEventHandlers;
+import io.github.kieckegard.transactional.events.InMemoryDomainEventHandlerHolder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class Demo {
         instances.put(CreateTickedCommandHandler.class, new CreateTickedCommandHandler());
         instances.put(CreatedOrderEventHandler.class, new CreatedOrderEventHandler(domainEventPublisher));
         
-        final DomainEventResolver resolver = new DomainEventResolver(new ReflectionDomainEventHandlers(
+        final DomainEventResolver resolver = new DomainEventResolver(new InMemoryDomainEventHandlerHolder(
                 beanProvider, "io.github.kieckegard"), domainEventRepository);
         final DomainEventHandlerWorker worker = new DomainEventHandlerWorker(domainEventRepository, resolver);
         

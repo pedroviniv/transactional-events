@@ -5,11 +5,6 @@
  */
 package io.github.kieckegard.transactional.events;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
@@ -17,29 +12,35 @@ import java.util.logging.Logger;
 public class DomainEventHandler {
     
     private Object instance;
-    private Method method;
-    
-    public Class<?> getEventType() {
-        final Class<?>[] parameterTypes = this.method.getParameterTypes();
-        return parameterTypes[0];
-    }
-    
-    public DomainEventHandler(Object instance, Method method) {
+    private DomainEventHandlerMethod method;
+
+    public DomainEventHandler(Object instance, DomainEventHandlerMethod method) {
         this.instance = instance;
         this.method = method;
     }
     
-    public void handle(DomainEvent domainEvent) {
-        try {
-            this.method.invoke(this.instance, domainEvent);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DomainEventHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(DomainEventHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(DomainEventHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void handle(final DomainEvent domainEvent) {
+        this.method.invoke(this.instance, domainEvent);
     }
-    
-    
+
+    public Object getInstance() {
+        return instance;
+    }
+
+    public void setInstance(Object instance) {
+        this.instance = instance;
+    }
+
+    public DomainEventHandlerMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(DomainEventHandlerMethod method) {
+        this.method = method;
+    }
+
+    @Override
+    public String toString() {
+        return "DomainEventHandler{" + "instance=" + instance + ", method=" + method + '}';
+    }
 }

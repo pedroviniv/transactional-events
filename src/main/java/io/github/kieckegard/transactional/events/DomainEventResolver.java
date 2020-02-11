@@ -11,11 +11,11 @@ package io.github.kieckegard.transactional.events;
  */
 public class DomainEventResolver {
     
-    private DomainEventHandlers domainEventHandlers;
+    private DomainEventHandlerHolder domainEventHandlerHolder;
     private DomainEventRepository domainEventRepository;
 
-    public DomainEventResolver(DomainEventHandlers domainEventHandlers, DomainEventRepository domainEventRepository) {
-        this.domainEventHandlers = domainEventHandlers;
+    public DomainEventResolver(DomainEventHandlerHolder domainEventHandlers, DomainEventRepository domainEventRepository) {
+        this.domainEventHandlerHolder = domainEventHandlers;
         this.domainEventRepository = domainEventRepository;
     }
     
@@ -23,7 +23,7 @@ public class DomainEventResolver {
     public void resolve(DomainEvent domainEvent) {
         
         final DomainEventHandler domainEventHandler = 
-                this.domainEventHandlers.get(domainEvent);
+                this.domainEventHandlerHolder.get(domainEvent);
         
         domainEventHandler.handle(domainEvent);
         this.domainEventRepository.markAsHandled(domainEvent.getId());
